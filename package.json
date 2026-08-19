@@ -2,9 +2,9 @@
   "name": "electron-project-2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "keywords": [],
   "author": "",
@@ -12,5 +12,8 @@
   "type": "commonjs",
   "devDependencies": {
     "electron": "^43.4.1"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3"
   }
 }
