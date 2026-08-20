@@ -17,7 +17,13 @@
     </nav>
 
     <div id="stockContainer">
-        <div id="leftStockContainer"></div>
+        <div id="leftStockContainer">
+            <input type="text" id="stockInputProduct" class="stockInput" placeholder="Product name...">
+            <input type="number" id="stockInputPrice" class="stockInput" placeholder="Price (Dollar)...">
+            <input type="number" id="stockInputTotal" class="stockInput" placeholder="Total product...">
+
+            <button onclick="addStock()" id="stockButton">ADD</button>
+        </div>
         <div id="rightStockContainer"></div>
     </div>
 

@@ -22,13 +22,19 @@ nav #subContainer h2 {
     cursor: pointer;
 }
 
-
+/* First Container (Stock Container) */
 #stockContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: calc(100vh - 60px);
 }
 #leftStockContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
     background-color: red;
     border-right: 2px dashed black;
     overflow: hidden;
@@ -36,4 +42,16 @@ nav #subContainer h2 {
 #rightStockContainer {
     background-color: blue;
     overflow-y: auto;
+}
+
+/* Left Stock Container */
+.stockInput, #stockButton {
+    width: 300px;
+    height: 50px;
+    padding: 5px;
+}
+#stockButton {
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
 }
