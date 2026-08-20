@@ -9,6 +9,7 @@ nav {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    height: 60px;
     padding: 10px;
     font-size: 1.3rem;
     border-bottom: 2px dashed black;
@@ -19,4 +20,20 @@ nav #subContainer {
 }
 nav #subContainer h2 {
     cursor: pointer;
+}
+
+
+#stockContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 60px);
+}
+#leftStockContainer {
+    background-color: red;
+    border-right: 2px dashed black;
+    overflow: hidden;
+}
+#rightStockContainer {
+    background-color: blue;
+    overflow-y: auto;
 }
