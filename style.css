@@ -26,7 +26,7 @@ nav #subContainer h2 {
 #stockContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    min-height: calc(100vh - 60px);
+    height: calc(100vh - 60px);
 }
 #leftStockContainer {
     display: flex;
@@ -40,6 +40,9 @@ nav #subContainer h2 {
     overflow: hidden;
 }
 #rightStockContainer {
+    padding: 10px;
+    font-size: 1.4rem;
+
     background-color: blue;
     overflow-y: auto;
 }
@@ -54,4 +57,9 @@ nav #subContainer h2 {
     font-size: 1.4rem;
     font-weight: bold;
     cursor: pointer;
+}
+
+/* Right Stock Container */
+#stockList {
+    list-style: none;
 }
