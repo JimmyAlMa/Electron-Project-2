@@ -12,6 +12,7 @@ nav {
     height: 60px;
     padding: 10px;
     font-size: 1.3rem;
+    background-color: green;
     border-bottom: 2px dashed black;
 }
 nav #subContainer {
