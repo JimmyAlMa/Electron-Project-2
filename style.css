@@ -15,11 +15,11 @@ nav {
     background-color: green;
     border-bottom: 2px dashed black;
 }
-nav #subContainer {
+nav #navSubContainer {
     display: flex;
     gap: 20px;
 }
-nav #subContainer h2 {
+nav #navSubContainer h2 {
     cursor: pointer;
 }
 
