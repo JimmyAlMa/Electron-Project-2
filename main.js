@@ -19,6 +19,7 @@ function initDatabase() {
         CREATE TABLE IF NOT EXISTS stock (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
+            price INTEGER NOT NULL DEFAULT 0,
             total INTEGER NOT NULL DEFAULT 0
         )
     `)
@@ -41,4 +42,18 @@ function createWindow() {
 app.whenReady().then(() => {
     initDatabase()
     createWindow()
+})
+
+ipcMain.handle('add-stock', (event, name, price, total) => {
+    try {
+        const stmt = db.prepare(`
+                INSERT INTO stock (name, price, total)
+                VALUES (?, ?, ?)
+            `)
+        const info = stmt.run(name, price, total)
+        return { success: true, id: info.lastInsertRowid }
+    } catch (err) {
+        console.error('Failed to add stock', err)
+        return { success: false, error: err.message }
+    }
 })
