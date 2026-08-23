@@ -1,5 +1,3 @@
-
-
 const navbar = document.querySelector('nav')
 const stockContainer = document.querySelector('#stockContainer')
 const cashierContainer = document.querySelector('#cashierContainer')
@@ -25,3 +23,54 @@ navbar.addEventListener('click', (event) => {
         historyContainer.style.display = 'flex'
     }
 })
+
+async function addStock() {
+    const productInput = document.getElementById('stockInputProduct')
+    const priceInput = document.getElementById('stockInputPrice')
+    const totalInput = document.getElementById('stockInputTotal')
+
+    const name = productInput.value.trim()
+    const price = priceInput.value
+    const total = totalInput.value
+
+    // Validate Input
+    if (!name) {
+        alert('Product name cannot be empty')
+        productInput.focus()
+        return
+    }
+    if (!price) {
+        alert('Product price cannot be empty')
+        priceInput.focus()
+        return
+    }
+    if (!total) {
+        alert('Product total cannot be empty')
+        totalInput.focus()
+        return
+    }
+
+    // Number Conversion and Value Validation
+    const priceNum = Number(price)
+    const totalNum = Number(total)
+
+    if (!Number.isInteger(priceNum) || priceNum < 0) {
+        alert('Price not valid')
+        return
+    }
+    if (!Number.isInteger(totalNum) || totalNum < 0) {
+        alert('Total not valid')
+        return
+    }
+
+    // Send To Main
+    const result = await window.stockApi.addStock(name, priceNum, totalNum)
+
+    if (result.success) {
+        productInput.value = ''
+        priceInput.value = ''
+        totalInput.value = ''
+    } else {
+        alert(result.error)
+    }
+}
