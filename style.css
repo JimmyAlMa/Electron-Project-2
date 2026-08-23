@@ -22,9 +22,11 @@ nav #subContainer h2 {
     cursor: pointer;
 }
 
+
+
 /* First Container (Stock Container) */
 #stockContainer {
-    display: none;
+    display: grid;
     grid-template-columns: 1fr 1fr;
     height: calc(100vh - 60px);
 }
@@ -68,7 +70,7 @@ nav #subContainer h2 {
 
 /* Second Container (Cashier Transactions Container) */
 #cashierContainer {
-    display: grid;
+    display: none;
     grid-template-columns: 1fr 1fr;
     height: calc(100vh - 60px);
 }
@@ -137,4 +139,22 @@ nav #subContainer h2 {
     font-size: 1.4rem;
     font-weight: bold;
     cursor: pointer;
+}
+
+
+
+/* Third Container (History Payment Container) */
+#historyContainer {
+    display: none;
+    padding: 10px 25px;
+    height: calc(100vh - 60px);
+}
+#historyList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    color: gray;
+    font-size: 1.4rem;
+    overflow-y: auto;
 }
