@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const Database = require('better-sqlite3')
 const path = require('path')
 const fs = require('fs')
@@ -69,4 +69,8 @@ ipcMain.handle('get-stock', () => {
         console.error('Failed to get data', err)
         return { success: false, error: err.message }
     }
+})
+
+ipcMain.handle('show-error', (event, message) => {
+    dialog.showOpenDialog('Error:', message)
 })
