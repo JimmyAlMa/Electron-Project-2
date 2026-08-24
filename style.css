@@ -63,11 +63,13 @@ nav #navSubContainer h2 {
 }
 
 /* Right Stock Container */
-#stockList {
-    list-style: none;
+.stockList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 15px;
+    color: #b4b2b2;
 }
-
-
 
 /* Second Container (Cashier Transactions Container) */
 #cashierContainer {
