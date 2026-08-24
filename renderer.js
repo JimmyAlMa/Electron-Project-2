@@ -85,14 +85,17 @@ async function getStockData() {
     }
 
     const data = result.data
-    const stockList = document.querySelector('.stockList')
-    stockList.innerHTML = ''
+    const stockLists = document.querySelectorAll('.stockList')
     
-    data.forEach(info => {
-        const li = document.createElement('li')
-        li.textContent = `(${info.id}) ${info.name} | ${info.price} | ${info.total}`
-        stockList.appendChild(li)
-    });
+    stockLists.forEach(stockList => {
+        stockList.innerHTML = ''
+        data.forEach(info => {
+            const li = document.createElement('li')
+            li.textContent = `(${info.id}) ${info.name} | ${info.price} | ${info.total}`
+            stockList.appendChild(li)
+        });
+    })
+
 }
 
 getStockData()
