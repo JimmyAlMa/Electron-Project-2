@@ -72,5 +72,5 @@ ipcMain.handle('get-stock', () => {
 })
 
 ipcMain.handle('show-error', (event, message) => {
-    dialog.showOpenDialog('Error:', message)
+    dialog.showErrorBox('Error:', message)
 })
