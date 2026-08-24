@@ -70,7 +70,30 @@ async function addStock() {
         productInput.value = ''
         priceInput.value = ''
         totalInput.value = ''
+        alert('Add product success')
+        await getStockData()
     } else {
         alert(result.error)
     }
 }
+
+async function getStockData() {
+    const result = await window.stockApi.getStock()
+
+    if (!result.success) {
+        console.log(result.error)
+        return
+    }
+
+    const data = result.data
+    const stockList = document.querySelector('.stockList')
+    stockList.innerHTML = ''
+    
+    data.forEach(info => {
+        const li = document.createElement('li')
+        li.textContent = `(${info.id}) ${info.name} | ${info.price} | ${info.total}`
+        stockList.appendChild(li)
+    });
+}
+
+getStockData()
