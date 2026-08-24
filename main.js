@@ -57,3 +57,16 @@ ipcMain.handle('add-stock', (event, name, price, total) => {
         return { success: false, error: err.message }
     }
 })
+
+ipcMain.handle('get-stock', () => {
+    try {
+        const stmt = db.prepare(`
+            SELECT * FROM stock ORDER BY id ASC
+            `)
+        const info = stmt.all()
+        return { success: true, data: info }
+    } catch (err) {
+        console.error('Failed to get data', err)
+        return { success: false, error: err.message }
+    }
+})
