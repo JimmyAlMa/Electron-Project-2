@@ -35,17 +35,17 @@ async function addStock() {
 
     // Validate Input
     if (!name) {
-        alert('Product name cannot be empty')
+        await window.dialogApi.showErrorMessage('Product name cannot be empty')
         productInput.focus()
         return
     }
     if (!price) {
-        alert('Product price cannot be empty')
+        await window.dialogApi.showErrorMessage('Product price cannot be empty')
         priceInput.focus()
         return
     }
     if (!total) {
-        alert('Product total cannot be empty')
+        await window.dialogApi.showErrorMessage('Product total cannot be empty')
         totalInput.focus()
         return
     }
@@ -55,11 +55,11 @@ async function addStock() {
     const totalNum = Number(total)
 
     if (!Number.isInteger(priceNum) || priceNum < 0) {
-        alert('Price not valid')
+        await window.dialogApi.showErrorMessage('Price not valid')
         return
     }
     if (!Number.isInteger(totalNum) || totalNum < 0) {
-        alert('Total not valid')
+        await window.dialogApi.showErrorMessage('Total not valid')
         return
     }
 
@@ -70,10 +70,9 @@ async function addStock() {
         productInput.value = ''
         priceInput.value = ''
         totalInput.value = ''
-        alert('Add product success')
         await getStockData()
     } else {
-        alert(result.error)
+        await window.dialogApi.showErrorMessage(`${result.error}`)
     }
 }
 
