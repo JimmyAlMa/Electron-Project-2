@@ -62,19 +62,7 @@ nav #navSubContainer h2 {
     cursor: pointer;
 }
 
-/* Right Stock Container */
-.stockList {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-left: 15px;
-    color: #b4b2b2;
-}
-.deleteProductButton {
-    margin-left: 10px;
-    font-size: 1.4rem;
-    cursor: pointer;
-}
+
 
 /* Second Container (Cashier Transactions Container) */
 #cashierContainer {
@@ -165,4 +153,24 @@ nav #navSubContainer h2 {
     color: gray;
     font-size: 1.4rem;
     overflow-y: auto;
+}
+
+
+.stockList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 15px;
+    color: #b4b2b2;
+}
+.deleteProductButton {
+    margin-left: 10px;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+.productText {
+    cursor: pointer;
+}
+.productText:hover {
+    color: #e7e7e7
 }
