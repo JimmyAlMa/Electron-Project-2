@@ -70,6 +70,10 @@ nav #navSubContainer h2 {
     margin-left: 15px;
     color: #b4b2b2;
 }
+.deleteProductButton {
+    margin-left: 10px;
+    font-size: 1.4rem;
+}
 
 /* Second Container (Cashier Transactions Container) */
 #cashierContainer {

@@ -91,11 +91,21 @@ async function getStockData() {
         stockList.innerHTML = ''
         data.forEach(info => {
             const li = document.createElement('li')
-            li.textContent = `(${info.id}) ${info.name} | ${info.price} | ${info.total}`
+            li.className = 'productList'
+            
+            const textSpan = document.createElement('span')
+            textSpan.textContent = `(${info.id}) ${info.name} | ${info.price} | ${info.total}`
+
+            const deleteButton = document.createElement('button')
+            deleteButton.className = 'deleteProductButton'
+            deleteButton.textContent = 'Delete'
+            deleteButton.addEventListener('click', () => deleteProduct(info.id))
+
+            li.appendChild(textSpan)
+            li.appendChild(deleteButton)
             stockList.appendChild(li)
         });
     })
-
 }
 
 getStockData()
