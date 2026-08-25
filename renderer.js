@@ -108,4 +108,14 @@ async function getStockData() {
     })
 }
 
+async function deleteProduct(id) {
+    const result = await window.stockApi.deleteStock(id)
+
+    if (result.success) {
+        getStockData()
+    } else {s
+        console.log(result.error)
+    }
+}
+
 getStockData()
