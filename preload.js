@@ -2,7 +2,8 @@ const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('stockApi', {
     addStock: (name, price, total) => ipcRenderer.invoke('add-stock', name, price, total),
-    getStock: () => ipcRenderer.invoke('get-stock')
+    getStock: () => ipcRenderer.invoke('get-stock'),
+    deleteStock: (id) => ipcRenderer.invoke('delete-stock', id)
 })
 
 contextBridge.exposeInMainWorld('dialogApi', {
