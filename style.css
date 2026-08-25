@@ -73,6 +73,7 @@ nav #navSubContainer h2 {
 .deleteProductButton {
     margin-left: 10px;
     font-size: 1.4rem;
+    cursor: pointer;
 }
 
 /* Second Container (Cashier Transactions Container) */
