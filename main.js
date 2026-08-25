@@ -71,6 +71,17 @@ ipcMain.handle('get-stock', () => {
     }
 })
 
+ipcMain.handle('delete-stock', (event, id) => {
+    try {
+        const stmt = db.prepare(`DELETE FROM stock WHERE id = ?`)
+        const info = stmt.run(id)
+        return { success: true, data: info.changes }
+    } catch (err) {
+        console.error('Failed to delete data', err)
+        return { success: false, error: err.message }
+    }
+})
+
 ipcMain.handle('show-error', (event, message) => {
     dialog.showErrorBox('Error:', message)
 })
