@@ -94,7 +94,9 @@ async function getStockData() {
             li.className = 'productList'
             
             const textSpan = document.createElement('span')
+            textSpan.className = 'productText'
             textSpan.textContent = `(${info.id}) ${info.name} | ${info.price} | ${info.total}`
+            textSpan.addEventListener('click', () => addToCart(info))
 
             const deleteButton = document.createElement('button')
             deleteButton.className = 'deleteProductButton'
@@ -116,6 +118,52 @@ async function deleteProduct(id) {
     } else {s
         console.log(result.error)
     }
+}
+
+let userCart = []
+function addToCart(product) {
+    const existing = userCart.find(item => item.id === product.id)
+
+    if (existing) {
+        existing.total += 1
+    } else {
+        userCart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            total: 1
+        })
+    }
+    renderCart()
+}
+
+function renderCart() {
+    const cartList = document.querySelector('#cartList')
+    cartList.innerHTML = ''
+
+    userCart.forEach(item => {
+        const li = document.createElement('li')
+
+        const textSpan = document.createElement('span')
+        textSpan.textContent = `${item.name} | ${item.price} x ${item.total}`
+        textSpan.addEventListener('click', () => reduceFromCart(item.id))
+
+        li.appendChild(textSpan)
+        cartList.appendChild(li)
+    })
+}
+
+function reduceFromCart(id) {
+    const existing = userCart.find(item => item.id === id)
+
+    if (!existing) return
+
+    existing.total -= 1
+
+    if (existing.total <= 0) {
+        userCart = userCart.filter(item => item.id !== id)
+    }
+    renderCart()
 }
 
 getStockData()
