@@ -82,6 +82,24 @@ ipcMain.handle('delete-stock', (event, id) => {
     }
 })
 
+ipcMain.handle('update-total-stock', (event, qty, id) => {
+    if (!Number.isInteger(qty) || qty < 0) {
+        return { success: false, error: 'Total not valid' }
+    }
+
+    try {
+        const stmt = db.prepare(`
+                UPDATE stock SET total = ? WHERE id = ?
+            `)
+        const info = stmt.run(qty, id)
+        
+        return { success: true, updated: info.changes }
+    } catch (err) {
+        console.error(err)
+        return { success: false, error: err.message }
+    }
+})
+
 ipcMain.handle('show-error', (event, message) => {
     dialog.showErrorBox('Error:', message)
 })
