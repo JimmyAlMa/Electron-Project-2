@@ -76,6 +76,8 @@ async function addStock() {
     }
 }
 
+let allStock = []
+let userCart = []
 async function getStockData() {
     const result = await window.stockApi.getStock()
 
@@ -84,19 +86,31 @@ async function getStockData() {
         return
     }
 
-    const data = result.data
+    allStock = result.data
+    renderStockList()
+}
+
+function renderStockList() {
+
     const stockLists = document.querySelectorAll('.stockList')
     
     stockLists.forEach(stockList => {
         stockList.innerHTML = ''
-        data.forEach(info => {
+
+        allStock.forEach(info => {
+            const cartItem = userCart.find(item => item.id === info.id)
+            const displayedTotal = info.total - (cartItem ? cartItem.total : 0)
+
             const li = document.createElement('li')
             li.className = 'productList'
             
             const textSpan = document.createElement('span')
             textSpan.className = 'productText'
-            textSpan.textContent = `(${info.id}) ${info.name} | ${info.price} | ${info.total}`
-            textSpan.addEventListener('click', () => addToCart(info))
+            textSpan.textContent = `(${info.id}) ${info.name} | ${info.price} | ${displayedTotal}`
+
+            if (displayedTotal > 0) {
+                textSpan.addEventListener('click', () => addToCart(info))
+            }
 
             const deleteButton = document.createElement('button')
             deleteButton.className = 'deleteProductButton'
@@ -106,7 +120,7 @@ async function getStockData() {
             li.appendChild(textSpan)
             li.appendChild(deleteButton)
             stockList.appendChild(li)
-        });
+        })
     })
 }
 
@@ -119,24 +133,6 @@ async function deleteProduct(id) {
         console.log(result.error)
     }
 }
-
-let userCart = []
-function addToCart(product) {
-    const existing = userCart.find(item => item.id === product.id)
-
-    if (existing) {
-        existing.total += 1
-    } else {
-        userCart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            total: 1
-        })
-    }
-    renderCart()
-}
-
 function renderCart() {
     const cartList = document.querySelector('#cartList')
     cartList.innerHTML = ''
@@ -153,6 +149,24 @@ function renderCart() {
     })
 }
 
+function addToCart(product) {
+    const existing = userCart.find(item => item.id === product.id)
+
+    if (existing) {
+        existing.total += 1
+    } else {
+        userCart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            total: 1
+        })
+    }
+    renderCart()
+    renderStockList()
+}
+
+
 function reduceFromCart(id) {
     const existing = userCart.find(item => item.id === id)
 
@@ -164,6 +178,7 @@ function reduceFromCart(id) {
         userCart = userCart.filter(item => item.id !== id)
     }
     renderCart()
+    renderStockList()
 }
 
 getStockData()
