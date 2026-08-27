@@ -100,6 +100,46 @@ ipcMain.handle('update-total-stock', (event, qty, id) => {
     }
 })
 
+ipcMain.handle('checkout-stock', (event, cartItem) => {
+    try {
+        const result = []
+
+        const checkout = db.transaction((items) => {
+            for (const item of items) {
+                const current = db.prepare('SELECT total FROM stock WHERE id = ?').get(item.id)
+
+                if (!current) {
+                    result.push({ id: item.id, success: false, error: 'Item not found' })
+                    continue
+                }
+
+                if (current.total < item.total) {
+                    result.push({ id: item.id, success: false, error: `${item.name} stock not enough` })
+                    continue
+                }
+
+                const newTotal = current.total - item.total
+
+                if (newTotal <= 0) {
+                    db.prepare('DELETE FROM stock WHERE id = ?').run(item.id)
+                    result.push({ id: item.id, success: true, deleted: true })
+                } else {
+                    db.prepare('UPDATE stock SET total = ? WHERE id = ?').run(newTotal, item.id)
+                    result.push({ id: item.id, success: true, deleted: false, newTotal })
+                }
+            }
+        })
+
+        checkout(cartItem)
+
+        return { success: true, result }
+    } catch (err) {
+        console.error(err)
+        return { success: false, error: err.message }
+
+    }
+})
+
 ipcMain.handle('show-error', (event, message) => {
     dialog.showErrorBox('Error:', message)
 })
