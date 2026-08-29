@@ -164,7 +164,7 @@ ipcMain.handle('checkout-stock', (event, cartItem) => {
                 }
 
                 db.prepare(`
-                        INSERT INTO payment_history_item (payment_id, product_name, price, qty)
+                        INSERT INTO payment_history_items (payment_id, product_name, price, qty)
                         VALUES (?, ?, ?, ?)
                     `).run(paymentId, item.name, item.price, item.total)
             }
@@ -179,6 +179,28 @@ ipcMain.handle('checkout-stock', (event, cartItem) => {
 
     }
 })
+
+ipcMain.handle('get-payment-history', () => {
+    try {
+        const payments = db.prepare(`
+                SELECT * FROM payment_history ORDER BY id DESC
+            `).all()
+        
+        const data = payments.map(payment => {
+            const items = db.prepare(`
+                    SELECT * FROM payment_history_items WHERE payment_id = ?
+                `).all(payment.id)
+            
+            return { ...payment, items }
+        })
+
+        return { success: true, data }
+    } catch (err) {
+        console.error(err)
+        return { success: false, error: err.message }
+    }
+})
+
 
 ipcMain.handle('show-error', (event, message) => {
     dialog.showErrorBox('Error:', message)
