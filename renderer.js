@@ -240,3 +240,4 @@ async function getPaymentHistory() {
 // Dan ketika sukses bayar, masukan ke history payment
 
 getStockData()
+getPaymentHistory()
