@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const Database = require('better-sqlite3')
 const path = require('path')
 const fs = require('fs')
+const { create } = require('domain')
 
 let db
 
@@ -15,12 +16,35 @@ function initDatabase() {
     const dbPath = path.join(userDataPath, 'stock.db')
     db = new Database(dbPath)
 
+    createTables()
+}
+
+function createTables() {
     db.exec(`
         CREATE TABLE IF NOT EXISTS stock (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             price INTEGER NOT NULL DEFAULT 0,
             total INTEGER NOT NULL DEFAULT 0
+        )
+    `)
+
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS payment_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            total_price INTEGER NOT NULL,
+            created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
+        )
+    `)
+
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS payment_history_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            payment_id INTEGER NOT NULL,
+            product_name TEXT NOT NULL,
+            price INTEGER NOT NULL,
+            qty INTEGER NOT NULL,
+            FOREIGN KEY (payment_id) REFERENCES payment_history(id)
         )
     `)
 }
