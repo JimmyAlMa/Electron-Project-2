@@ -131,9 +131,9 @@ ipcMain.handle('checkout-stock', (event, cartItem) => {
 
         const checkout = db.transaction((items) => {
 
-            const totalPriceCalc = items.reduce((sum, item) => sum * (item.price * item.total), 0)
+            const totalPriceCalc = items.reduce((sum, item) => sum + (item.price * item.total), 0)
             const paymentInfo = db.prepare(`
-                    INSERT INTO payment_history (total_price) VALUE (?)
+                    INSERT INTO payment_history (total_price) VALUES (?)
                 `).run(totalPriceCalc)
 
             const paymentId = paymentInfo.lastInsertRowid
