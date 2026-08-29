@@ -124,19 +124,10 @@ function renderStockList() {
     })
 }
 
-async function deleteProduct(id) {
-    const result = await window.stockApi.deleteStock(id)
-
-    if (result.success) {
-        getStockData()
-    } else {s
-        console.log(result.error)
-    }
-}
 function renderCart() {
     const cartList = document.querySelector('#cartList')
     cartList.innerHTML = ''
-
+    
     userCart.forEach(item => {
         const li = document.createElement('li')
 
@@ -151,7 +142,7 @@ function renderCart() {
 
 function addToCart(product) {
     const existing = userCart.find(item => item.id === product.id)
-
+    
     if (existing) {
         existing.total += 1
     } else {
@@ -166,7 +157,6 @@ function addToCart(product) {
     renderStockList()
 }
 
-
 function reduceFromCart(id) {
     const existing = userCart.find(item => item.id === id)
 
@@ -180,5 +170,42 @@ function reduceFromCart(id) {
     renderCart()
     renderStockList()
 }
+
+async function deleteProduct(id) {
+    const result = await window.stockApi.deleteStock(id)
+
+    if (result.success) {
+        getStockData()
+    } else {s
+        console.log(result.error)
+    }
+}
+
+async function payCart() {
+    if (userCart.length === 0) {
+        await window.dialogApi.showErrorMessage('Cart is empty')
+        return
+    }
+
+    const result = await window.stockApi.checkoutCart(userCart)
+
+    if (!result.success) {
+        console.log(result.error)
+        await window.dialogApi.showErrorMessage('Something error, try again later...')
+    }
+
+    const failedItems = result.result.filter(r => !r.success)
+    if (failedItems.length > 0) {
+        failedItems.forEach(f => console.log(f.error))
+    }
+
+    userCart = []
+    renderCart()
+    await getStockData()
+}
+
+// To-Do Task for tommorow
+// Bikin payment button bekerja, stock database berkurang, dan bikin semua produk di userCart hilang.
+// Dan ketika sukses bayar, masukan ke history payment
 
 getStockData()
