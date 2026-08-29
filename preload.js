@@ -5,7 +5,8 @@ contextBridge.exposeInMainWorld('stockApi', {
     getStock: () => ipcRenderer.invoke('get-stock'),
     deleteStock: (id) => ipcRenderer.invoke('delete-stock', id),
     updateTotalStock: (qty, id) => ipcRenderer.invoke('update-total-stock', qty, id),
-    checkoutCart: (cartItem) => ipcRenderer.invoke('checkout-stock', cartItem)
+    checkoutCart: (cartItem) => ipcRenderer.invoke('checkout-stock', cartItem),
+    getPaymentHistory: () => ipcRenderer.invoke('get-payment-history')
 })
 
 contextBridge.exposeInMainWorld('dialogApi', {
