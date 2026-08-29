@@ -202,6 +202,37 @@ async function payCart() {
     userCart = []
     renderCart()
     await getStockData()
+    await getPaymentHistory()
+}
+
+async function getPaymentHistory() {
+    const result = await window.stockApi.getPaymentHistory()
+
+    if (!result.success) {
+        console.log(result.error)
+        return
+    }
+
+    const historyLst = document.querySelector('#historyList')
+    historyLst.innerHTML = ''
+    
+    result.data.forEach(payment => {
+        const li = document.createElement('li')
+
+        const header = document.createElement('div')
+        header.textContent = `Transaction #${payment.id} | ${payment.created_at} | Total: Rp${payment.total_price}`
+        li.appendChild(header)
+
+        const itemList = document.createElement('ul')
+        payment.items.forEach(item => {
+            const itemLi = document.createElement('li')
+            itemLi.textContent = `${item.product_name} | Rp${item.price} x ${item.qty}`
+            itemList.appendChild(itemLi)
+        })
+        li.appendChild(itemList)
+
+        historyLst.appendChild(li)
+    })
 }
 
 // To-Do Task for tommorow
