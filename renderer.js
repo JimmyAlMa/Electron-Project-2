@@ -235,9 +235,5 @@ async function getPaymentHistory() {
     })
 }
 
-// To-Do Task for tommorow
-// Bikin payment button bekerja, stock database berkurang, dan bikin semua produk di userCart hilang.
-// Dan ketika sukses bayar, masukan ke history payment
-
 getStockData()
 getPaymentHistory()
