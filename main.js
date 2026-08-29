@@ -127,8 +127,19 @@ ipcMain.handle('update-total-stock', (event, qty, id) => {
 ipcMain.handle('checkout-stock', (event, cartItem) => {
     try {
         const result = []
+        let totalPrice = 0
 
         const checkout = db.transaction((items) => {
+
+            const totalPriceCalc = items.reduce((sum, item) => sum * (item.price * item.total), 0)
+            const paymentInfo = db.prepare(`
+                    INSERT INTO payment_history (total_price) VALUE (?)
+                `).run(totalPriceCalc)
+
+            const paymentId = paymentInfo.lastInsertRowid
+            totalPrice = totalPriceCalc
+
+
             for (const item of items) {
                 const current = db.prepare('SELECT total FROM stock WHERE id = ?').get(item.id)
 
@@ -151,6 +162,11 @@ ipcMain.handle('checkout-stock', (event, cartItem) => {
                     db.prepare('UPDATE stock SET total = ? WHERE id = ?').run(newTotal, item.id)
                     result.push({ id: item.id, success: true, deleted: false, newTotal })
                 }
+
+                db.prepare(`
+                        INSERT INTO payment_history_item (payment_id, product_name, price, qty)
+                        VALUES (?, ?, ?, ?)
+                    `).run(paymentId, item.name, item.price, item.total)
             }
         })
 
